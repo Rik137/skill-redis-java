@@ -14,14 +14,10 @@ import java.util.List;
 import static java.lang.System.out;
 
 public class RedisStorageQueue {
-
-    // Объект для работы с Redis
+is
     private RedissonClient redisson;
 
-    // Объект для работы с ключами
-    private RList<String> userQueue;
 
-    // Объект для работы с Sorted Set'ом
     private RScoredSortedSet<String> onlineUsers;
 
     private final static String KEY = "USER_QUEUE";
@@ -49,14 +45,14 @@ public class RedisStorageQueue {
 
     public String showNextUser() {
         if (userQueue.isEmpty()) return null;
-        String user = userQueue.remove(0); // LPOP
-        userQueue.add(user); // RPUSH
+        String user = userQueue.remove(0);
+        userQueue.add(user);
         return user;
     }
 
     public void moveToFront(String userId) {
         userQueue.remove(userId);
-        userQueue.add(0, userId); // LPUSH
+        userQueue.add(0, userId);
     }
 
     public List<String> getQueueSnapshot() {
